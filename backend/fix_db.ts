@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -6,8 +7,8 @@ async function main() {
   for (const alat of alatList) {
     let newUrl = alat.foto;
     if (newUrl) {
-      if (newUrl.includes('localhost:3000') || newUrl.includes('127.0.0.1:3000')) {
-        newUrl = newUrl.replace('localhost:3000', '10.0.2.2:3000').replace('127.0.0.1:3000', '10.0.2.2:3000');
+      if (newUrl.includes('localhost:3000') || newUrl.includes('127.0.0.1:3000') || newUrl.includes('10.0.2.2:3000')) {
+        newUrl = newUrl.replace('localhost:3000', '192.168.0.192:3000').replace('127.0.0.1:3000', '192.168.0.192:3000').replace('10.0.2.2:3000', '192.168.0.192:3000');
       } else if (!newUrl.startsWith('http')) {
         newUrl = null;
       }
@@ -26,8 +27,8 @@ async function main() {
   for (const user of userList) {
     let newUrl = user.foto_profil;
     if (newUrl) {
-      if (newUrl.includes('localhost:3000') || newUrl.includes('127.0.0.1:3000')) {
-        newUrl = newUrl.replace('localhost:3000', '10.0.2.2:3000').replace('127.0.0.1:3000', '10.0.2.2:3000');
+      if (newUrl.includes('localhost:3000') || newUrl.includes('127.0.0.1:3000') || newUrl.includes('10.0.2.2:3000')) {
+        newUrl = newUrl.replace('localhost:3000', '192.168.0.192:3000').replace('127.0.0.1:3000', '192.168.0.192:3000').replace('10.0.2.2:3000', '192.168.0.192:3000');
       } else if (!newUrl.startsWith('http')) {
         newUrl = null;
       }
