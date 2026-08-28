@@ -25,7 +25,7 @@ export const createAlat = async (req: Request, res: Response): Promise<void> => 
     }
     try {
       const { kategori_id, nama_alat, deskripsi, lokasi, stok, kondisi, catatan,
-              kode_alat, nama_alat: namaAlatBody } = req.body;
+              kode_alat, durasi, nama_alat: namaAlatBody } = req.body;
       const namaFinal = nama_alat || namaAlatBody;
       
       if (!namaFinal || kategori_id == null) {
@@ -45,10 +45,12 @@ export const createAlat = async (req: Request, res: Response): Promise<void> => 
       const data = await prisma.alat.create({
         data: { 
           kategori_id: Number(kategori_id), 
+          kode_alat: kode_alat || null,
           nama_alat: namaFinal, 
           deskripsi, 
           lokasi, 
           stok: Number(stok || 0), 
+          durasi: Number(durasi || 1),
           kondisi, 
           foto: fotoUrl, 
           catatan 
@@ -70,7 +72,7 @@ export const updateAlat = async (req: Request, res: Response): Promise<void> => 
     }
     try {
       const id = parseInt(req.params.id as string, 10);
-      const { kategori_id, nama_alat, deskripsi, lokasi, stok, kondisi, catatan } = req.body;
+      const { kategori_id, nama_alat, deskripsi, lokasi, stok, kondisi, catatan, kode_alat, durasi } = req.body;
       
       if (!nama_alat || kategori_id == null) {
         res.status(400).json({ message: 'Nama alat dan kategori wajib diisi.' });
@@ -98,10 +100,12 @@ export const updateAlat = async (req: Request, res: Response): Promise<void> => 
         where: { id },
         data: { 
           kategori_id: Number(kategori_id), 
+          kode_alat: kode_alat || null,
           nama_alat, 
           deskripsi, 
           lokasi, 
           stok: Number(stok || 0), 
+          durasi: Number(durasi || 1),
           kondisi, 
           foto: fotoUrl, 
           catatan 

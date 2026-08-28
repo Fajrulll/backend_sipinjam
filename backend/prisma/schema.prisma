@@ -38,10 +38,12 @@ model Kategori {
 model Alat {
   id          Int      @id @default(autoincrement())
   kategori_id Int
+  kode_alat   String?  @unique
   nama_alat   String
   deskripsi   String?
   lokasi      String?
   stok        Int      @default(0)
+  durasi      Int      @default(1)
   kondisi     Kondisi?
   foto        String?
   catatan     String?
