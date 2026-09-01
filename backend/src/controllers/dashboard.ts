@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../prismaClient';
+import { formatPeminjamanData } from './peminjaman';
 
 export const getDashboardData = async (req: Request, res: Response) => {
   try {
@@ -29,7 +30,10 @@ export const getDashboardData = async (req: Request, res: Response) => {
       take: 5,
       orderBy: { tanggal_pinjam: 'desc' },
       include: {
-        user: { select: { nama_lengkap: true } }
+        user: { select: { nama_lengkap: true } },
+        detail_peminjaman: {
+          include: { alat: { select: { nama_alat: true } } }
+        }
       }
     });
 
@@ -38,7 +42,7 @@ export const getDashboardData = async (req: Request, res: Response) => {
       totalAlat,
       peminjamanAktif,
       pengembalianHariIni,
-      recentTransactions
+      recentTransactions: formatPeminjamanData(recentTransactions)
     });
   } catch (err) {
     res.status(500).json({ message: 'Gagal mengambil data dashboard.' });

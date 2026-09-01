@@ -1,6 +1,26 @@
 import { Request, Response } from 'express';
 import prisma from '../prismaClient';
 
+export const formatPeminjamanData = (data: any[]) => {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+
+  return data.map((item) => {
+    let currentStatus = item.status;
+    if (currentStatus === 'Dipinjam') {
+      const deadline = new Date(item.tanggal_kembali);
+      deadline.setHours(0, 0, 0, 0);
+
+      if (now > deadline) {
+        currentStatus = 'Terlambat';
+      } else if (now.getTime() === deadline.getTime()) {
+        currentStatus = 'Jatuh Tempo';
+      }
+    }
+    return { ...item, status: currentStatus };
+  });
+};
+
 export const getPeminjaman = async (req: Request, res: Response) => {
   try {
     const data = await prisma.peminjaman.findMany({
@@ -14,7 +34,7 @@ export const getPeminjaman = async (req: Request, res: Response) => {
         pengembalian: true,
       }
     });
-    res.json(data);
+    res.json(formatPeminjamanData(data));
   } catch (err) {
     res.status(500).json({ message: 'Gagal mengambil data peminjaman.' });
   }
@@ -35,7 +55,7 @@ export const getPeminjamanByUser = async (req: Request, res: Response): Promise<
         pengembalian: true,
       }
     });
-    res.json(data);
+    res.json(formatPeminjamanData(data));
   } catch (err) {
     res.status(500).json({ message: 'Gagal mengambil data peminjaman.' });
   }
