@@ -30,7 +30,7 @@ export const getDashboardData = async (req: Request, res: Response) => {
       take: 5,
       orderBy: { tanggal_pinjam: 'desc' },
       include: {
-        user: { select: { nama_lengkap: true } },
+        user: { select: { nama_lengkap: true, foto_profil: true } },
         detail_peminjaman: {
           include: { alat: { select: { nama_alat: true } } }
         }

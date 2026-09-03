@@ -3,18 +3,14 @@ import prisma from '../prismaClient';
 
 export const formatPeminjamanData = (data: any[]) => {
   const now = new Date();
-  now.setHours(0, 0, 0, 0);
 
   return data.map((item) => {
     let currentStatus = item.status;
     if (currentStatus === 'Dipinjam') {
       const deadline = new Date(item.tanggal_kembali);
-      deadline.setHours(0, 0, 0, 0);
 
       if (now > deadline) {
         currentStatus = 'Terlambat';
-      } else if (now.getTime() === deadline.getTime()) {
-        currentStatus = 'Jatuh Tempo';
       }
     }
     return { ...item, status: currentStatus };
