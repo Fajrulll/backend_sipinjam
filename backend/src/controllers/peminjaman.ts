@@ -7,10 +7,14 @@ export const formatPeminjamanData = (data: any[]) => {
   return data.map((item) => {
     let currentStatus = item.status;
     if (currentStatus === 'Dipinjam') {
-      const deadline = new Date(item.tanggal_kembali);
+      if (item.pengembalian) {
+        currentStatus = 'Menunggu Verifikasi';
+      } else {
+        const deadline = new Date(item.tanggal_kembali);
 
-      if (now > deadline) {
-        currentStatus = 'Terlambat';
+        if (now > deadline) {
+          currentStatus = 'Terlambat';
+        }
       }
     }
     return { ...item, status: currentStatus };

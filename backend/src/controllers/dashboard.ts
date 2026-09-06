@@ -32,7 +32,7 @@ export const getDashboardData = async (req: Request, res: Response) => {
       include: {
         user: { select: { nama_lengkap: true, foto_profil: true } },
         detail_peminjaman: {
-          include: { alat: { select: { nama_alat: true } } }
+          include: { alat: { select: { nama_alat: true, foto: true } } }
         }
       }
     });
